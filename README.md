@@ -4,7 +4,7 @@ This repo is a temporary workaround while we build our Android SDK, essentially 
 
 This method of using Teller Connect is not supported unless separately agreed with your Teller point of contact.
 
-## Usage
+## Usage - `ConnectActivity`
 It provides a quick way of integrating Teller Connect into an Android app by starting `ConnectActivity` to receive a result later after the flow finishes:
 
 To start Teller Connect:
@@ -39,3 +39,8 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     }
 }
 ```
+
+## Usage - `ConnectFragment`
+
+Alternatively, you may want to use `ConnectFragment` for a bit more control.
+Take a look at `ConnectActivity` source code for details.

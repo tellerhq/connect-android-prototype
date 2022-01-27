@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import com.google.android.material.snackbar.Snackbar
 import io.teller.connect.sdk.*
 import timber.log.Timber
@@ -37,7 +36,7 @@ class MainActivity : Activity() {
 
     private fun startTellerConnect() {
         val intent = Intent(this, ConnectActivity::class.java)
-        intent.putExtra(ConnectActivity.ARG_CONFIG, configuration)
+        intent.putExtra(ConnectActivity.EXTRA_CONFIG, configuration)
         startActivityForResult(intent, RC_CONNECT_BANK_ACCOUNT)
     }
 
