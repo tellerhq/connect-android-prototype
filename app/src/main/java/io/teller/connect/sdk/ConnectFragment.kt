@@ -52,7 +52,12 @@ class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMe
             )
         } else {
             /*
-            The postMessage API is supported since Android WebView 37 so this should never happen.
+            This feature flag was added to Chromium in late 2019:
+            https://chromium-review.googlesource.com/c/chromium/src/+/1745462Android
+
+            WebView auto updates since Android 5.0 (released in 2014) so devices in the wild
+            should not be missing this feature.
+
             If it turns out it's a problem, the older JavascriptInterface API can be used.
             */
             Snackbar.make(
