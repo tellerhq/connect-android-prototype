@@ -64,6 +64,7 @@ class ConnectActivity : FragmentActivity(), ConnectListener {
     }
 
     override fun onFailure(error: Error) {
+        val intent = Intent()
         intent.putExtra(RESULT_ERROR, error)
 
         setResult(RESULT_CANCELED, intent)
