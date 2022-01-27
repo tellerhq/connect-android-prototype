@@ -11,6 +11,27 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
         <!-- Customize your theme here. -->
+
+        <item name="snackbarStyle">@style/MaterialSnackBar</item>
+        <item name="snackbarButtonStyle">@style/MaterialSnackBar.Button</item>
+        <item name="snackbarTextViewStyle">@style/MaterialSnackBar.Text</item>
+    </style>
+
+    <style name="MaterialSnackBar" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/blue_grey_700</item>
+    </style>
+
+    <style name="MaterialSnackBar.Button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="backgroundTint">@color/purple_700</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="MaterialSnackBar.Text" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAlignment">gravity</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>
