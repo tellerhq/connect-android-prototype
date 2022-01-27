@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import io.teller.connect.sdk.*
-import timber.log.Timber
 
 class MainActivity : Activity() {
 
@@ -27,7 +26,6 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         connectButton = findViewById(R.id.connectButton)
         connectButton.setOnClickListener {
             startTellerConnect()
@@ -44,9 +42,11 @@ class MainActivity : Activity() {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 RC_CONNECT_BANK_ACCOUNT -> {
-                    val registrationData = data?.getParcelableExtra<Registration>(ConnectActivity.RESULT_REGISTRATION)
-                    Timber.i("Registration data: $registrationData")
-                    Snackbar.make(connectButton, "\uD83D\uDCB8 Success! \uD83D\uDCB8", Snackbar.LENGTH_LONG).show()
+                    val registrationData =
+                        data?.getParcelableExtra<Registration>(ConnectActivity.RESULT_REGISTRATION)
+                    val message =
+                        "\uD83D\uDCB8 Success! \uD83D\uDCB8" + "\n" + "accessToken: ${registrationData?.accessToken}"
+                    Snackbar.make(connectButton, message, Snackbar.LENGTH_LONG).show()
                 }
             }
         } else {
@@ -54,7 +54,7 @@ class MainActivity : Activity() {
             if (error != null) {
                 Snackbar.make(connectButton, "Error: ${error.message}", Snackbar.LENGTH_LONG).show()
             } else {
-                Snackbar.make(connectButton, "Canceled by user", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(connectButton, "Failure", Snackbar.LENGTH_LONG).show()
             }
         }
     }

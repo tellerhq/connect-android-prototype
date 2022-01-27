@@ -1,7 +1,6 @@
 package io.teller.connect.sdk
 
 import android.os.Parcelable
-import com.beust.klaxon.Json
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -73,14 +72,3 @@ data class Institution(val name: String) : Parcelable
 
 @Parcelize
 data class Error(val type: String, val code: String, val message: String) : Parcelable
-
-@Parcelize
-data class Account(
-    val id: String,
-    val name: String,
-    val accountNumber: String,
-    val institution: Institution,
-    val currencyCode: String,
-    val routingNumbers: RoutingInfo,
-    val balances: Balance
-) : Parcelable
