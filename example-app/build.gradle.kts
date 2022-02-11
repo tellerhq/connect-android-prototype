@@ -36,7 +36,6 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("androidx.fragment:fragment:$fragmentVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
-    implementation("androidx.webkit:webkit:1.4.0")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
 
