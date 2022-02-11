@@ -26,7 +26,7 @@ android {
         }
     }
 
-//    resourcePrefix = "tc_"
+    resourcePrefix = "tc_"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

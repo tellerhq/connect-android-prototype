@@ -19,7 +19,7 @@ class ConnectActivity : FragmentActivity(), ConnectListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_connect)
+        setContentView(R.layout.tc_activity_connect)
 
         if (savedInstanceState == null) {
             val config = intent.getParcelableExtra<Configuration>(EXTRA_CONFIG)!!

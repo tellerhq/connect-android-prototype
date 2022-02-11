@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.webkit.*
 import com.beust.klaxon.Klaxon
 
-class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMessageListener {
+class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.WebMessageListener {
 
     companion object {
         const val ARG_CONFIG = "ARG_CONFIGURATION"
