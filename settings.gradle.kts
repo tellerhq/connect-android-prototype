@@ -1,3 +1,4 @@
 rootProject.name = "TellerConnect"
 rootProject.buildFileName = "build.gradle.kts"
-include(":app")
+include(":example-app")
+include(":sdk")
