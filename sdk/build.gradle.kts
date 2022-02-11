@@ -3,6 +3,14 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
+    id("maven-publish")
+}
+
+object SDK {
+    const val version = "0.1.0"
+    const val groupId = "io.teller"
+    const val artifactId = "connect-android-sdk"
+    const val repository = "github.com/tellerhq/connect-android-prototype"
 }
 
 android {
@@ -37,6 +45,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
@@ -49,4 +64,51 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("Sdk") {
+
+                groupId = SDK.groupId
+                artifactId = SDK.artifactId
+                version = SDK.version
+
+                from(components["release"])
+
+                pom {
+                    name.set("Teller Connect Android SDK")
+                    description.set("Connect is a Teller-hosted authorization flow")
+                    url.set("https://teller.io")
+
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+
+                    scm {
+                        connection.set("scm:git:git://${SDK.repository}.git")
+                        developerConnection.set("scm:git:ssh://${SDK.repository}.git")
+                        url.set("http://${SDK.repository}/")
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GithubPackages"
+                url = uri("https://maven.pkg.${SDK.repository}")
+                credentials {
+                    username =
+                        properties["github.user_id"] as String? ?: System.getenv("GITHUB_USER_ID")
+                    password = properties["github.access_token"] as String?
+                        ?: System.getenv("GITHUB_ACCESS_TOKEN")
+                }
+            }
+        }
+    }
 }
