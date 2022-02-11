@@ -15,10 +15,12 @@ class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMe
 
     companion object {
         const val ARG_CONFIG = "ARG_CONFIGURATION"
+        private const val JS_OBJECT_NAME = "AndroidApp"
     }
 
     private val klaxon = Klaxon()
-    private lateinit var webView: WebView
+    private lateinit var config: Configuration
+    private var webView: WebView? = null
     private var listener: ConnectListener? = null
 
     override fun onAttach(context: Context) {
@@ -31,38 +33,47 @@ class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMe
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val config = requireArguments().getParcelable<Configuration>(ARG_CONFIG)!!
-        setUpWebView(view)
-        startTellerConnect(config)
+        config = requireArguments().getParcelable(ARG_CONFIG)!!
+        webView = view.findViewById(R.id.connectWebView)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        webView?.let {
+            setUpWebView(it)
+            startTellerConnect(it, config)
+        } ?: throw RuntimeException("WebView is unexpectedly null!")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
+            webView?.let {
+                WebViewCompat.removeWebMessageListener(it, JS_OBJECT_NAME)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // destroy WebView internal state to avoid memory leaks
+        webView?.destroy()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun setUpWebView(view: View) {
-        webView = view.findViewById(R.id.connectWebView)
+    private fun setUpWebView(webView: WebView) {
         webView.settings.javaScriptEnabled = true
 
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
             WebViewCompat.addWebMessageListener(
                 webView,
-                "AndroidApp",
+                JS_OBJECT_NAME,
                 setOf("https://teller.io"),
                 this
             )
         } else {
-            /*
-            This feature flag was added to Chromium in late 2019:
-            https://chromium-review.googlesource.com/c/chromium/src/+/1745462Android
-
-            WebView auto updates since Android 5.0 (released in 2014) so devices in the wild
-            should not be missing this feature.
-
-            If it turns out it's a problem, the older JavascriptInterface API can be used.
-            */
-            Snackbar.make(
-                webView,
-                "Missing WebViewFeature.WEB_MESSAGE_LISTENER",
-                Snackbar.LENGTH_INDEFINITE
-            ).show()
+            onWebMessageListenerNotSupported()
         }
 
         webView.webViewClient = object : WebViewClientCompat() {
@@ -77,7 +88,7 @@ class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMe
         }
     }
 
-    private fun startTellerConnect(config: Configuration) {
+    private fun startTellerConnect(webView: WebView, config: Configuration) {
         val builder = Uri.Builder()
             .scheme("https")
             .authority("teller.io")
@@ -144,5 +155,24 @@ class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMe
     private fun onFailure(message: FailureMessage) {
         val error = Error(type = message.type, code = message.code, message = message.message)
         listener?.onFailure(error)
+    }
+
+    private fun onWebMessageListenerNotSupported() {
+        /*
+        This feature flag was added to Chromium in late 2019:
+        https://chromium-review.googlesource.com/c/chromium/src/+/1745462Android
+
+        WebView auto updates since Android 5.0 (released in 2014) so devices in the wild
+        should not be missing this feature.
+
+        If it turns out it's a problem, the older JavascriptInterface API can be used.
+        */
+        webView?.let {
+            Snackbar.make(
+                it,
+                "Missing WebViewFeature.WEB_MESSAGE_LISTENER",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
     }
 }
