@@ -9,7 +9,6 @@ import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.webkit.*
 import com.beust.klaxon.Klaxon
-import com.google.android.material.snackbar.Snackbar
 
 class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMessageListener {
 
@@ -147,7 +146,14 @@ class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMe
                 }
                 payee != null -> listener?.onSuccess(payee)
                 payment != null -> listener?.onSuccess(payment)
-                else -> null
+                else -> {
+                    val error = Error(
+                        type = "android_failure",
+                        code = "unrecognized_message",
+                        message = "Received an unrecognized message response: ${message.data}"
+                    )
+                    listener?.onFailure(error)
+                }
             }
         }
     }
@@ -167,12 +173,11 @@ class ConnectFragment : Fragment(R.layout.fragment_connect), WebViewCompat.WebMe
 
         If it turns out it's a problem, the older JavascriptInterface API can be used.
         */
-        webView?.let {
-            Snackbar.make(
-                it,
-                "Missing WebViewFeature.WEB_MESSAGE_LISTENER",
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
+        val error = Error(
+            type = "android_failure",
+            code = "wem_message_listener_unsupported",
+            message = "WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER) returned false. This device may be using an ancient version of WebKit."
+        )
+        listener?.onFailure(error)
     }
 }
