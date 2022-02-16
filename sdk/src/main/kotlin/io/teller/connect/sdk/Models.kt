@@ -27,6 +27,10 @@ data class Configuration(
      */
     val selectAccount: String? = null,
     /**
+     * Set to true to disable going back to the picker screen from an institution screen.
+     */
+    val skipPicker: Boolean = false,
+    /**
      *  The User ID of the Teller user
      *  you want to add more enrollments to.
      */

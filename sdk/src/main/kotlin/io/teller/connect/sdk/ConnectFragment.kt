@@ -99,6 +99,7 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
                 val env = it.toString().lowercase()
                 builder.appendQueryParameter("environment", env)
             }
+            builder.appendQueryParameter("skipPicker", skipPicker.toString())
             institution?.let { builder.appendQueryParameter("institution", it) }
             selectAccount?.let { builder.appendQueryParameter("selectAccount", it) }
             userId?.let { builder.appendQueryParameter("userId", it) }

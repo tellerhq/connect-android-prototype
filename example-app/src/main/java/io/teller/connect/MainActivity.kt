@@ -20,6 +20,8 @@ class MainActivity : FragmentActivity(), ConnectListener {
 
         val configuration = Configuration(
             appId = "YOUR-APP-ID-HERE",
+            skipPicker = true,
+            institution = "silicon_valley_bank",
             environment = Environment.SANDBOX
         )
     }
