@@ -45,7 +45,11 @@ data class Configuration(
      * and used to initialize Teller Connect to perform a particular task
      * (e.g. as completing a payment requiring multi-factor authentication).
      */
-    val connectToken: String? = null
+    val connectToken: String? = null,
+    /**
+     * Additional parameters.
+     */
+    val additionalParams: Map<String, String> = emptyMap()
 ) : Parcelable
 
 enum class Environment { SANDBOX, DEVELOPMENT, PRODUCTION }

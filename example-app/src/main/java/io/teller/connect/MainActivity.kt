@@ -19,10 +19,10 @@ class MainActivity : FragmentActivity(), ConnectListener {
         const val RC_CONNECT_PAYMENT = 44
 
         val configuration = Configuration(
-            appId = "YOUR-APP-ID-HERE",
+            appId = "YOUR-APP-ID",
             skipPicker = true,
-            institution = "silicon_valley_bank",
-            environment = Environment.SANDBOX
+            environment = Environment.SANDBOX,
+            selectAccount = "single"
         )
     }
 

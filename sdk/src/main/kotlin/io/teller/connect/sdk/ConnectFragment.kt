@@ -105,6 +105,9 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
             userId?.let { builder.appendQueryParameter("user_id", it) }
             enrollmentId?.let { builder.appendQueryParameter("enrollment_id", it) }
             connectToken?.let { builder.appendQueryParameter("connect_token", it) }
+            additionalParams.forEach { p ->
+                builder.appendQueryParameter(p.key, p.value)
+            }
         }
 
         webView.loadUrl(builder.toString())
