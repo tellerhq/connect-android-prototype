@@ -1,8 +1,10 @@
 package io.teller.connect.sdk
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
+@Keep
 @Parcelize
 data class Configuration(
     /**
@@ -52,31 +54,41 @@ data class Configuration(
     val additionalParams: Map<String, String> = emptyMap()
 ) : Parcelable
 
+@Keep
 enum class Environment { SANDBOX, DEVELOPMENT, PRODUCTION }
 
+@Keep
 @Parcelize
 data class Registration(val accessToken: String, val user: User, val enrollment: Enrollment) : Parcelable
 
+@Keep
 @Parcelize
 data class User(val id: String) : Parcelable
 
+@Keep
 @Parcelize
 data class Enrollment(val id: String, val institution: Institution) : Parcelable
 
+@Keep
 @Parcelize
 data class Payment(val id: String) : Parcelable
 
+@Keep
 @Parcelize
 data class Payee(val id: String) : Parcelable
 
+@Keep
 @Parcelize
 data class Balance(val ledger: String, val available: String) : Parcelable
 
+@Keep
 @Parcelize
 data class RoutingInfo(val ach: String, val wire: String? = null) : Parcelable
 
+@Keep
 @Parcelize
 data class Institution(val name: String) : Parcelable
 
+@Keep
 @Parcelize
 data class Error(val type: String, val code: String, val message: String) : Parcelable

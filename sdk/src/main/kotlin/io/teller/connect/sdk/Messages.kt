@@ -1,9 +1,11 @@
 package io.teller.connect.sdk
 
+import androidx.annotation.Keep
 import com.beust.klaxon.TypeAdapter
 import com.beust.klaxon.TypeFor
 import kotlin.reflect.KClass
 
+@Keep
 class MessageTypeAdapter: TypeAdapter<Message> {
     override fun classFor(type: Any): KClass<out Message> = when(type as String?) {
         "ready" -> ReadyMessage::class
@@ -14,6 +16,7 @@ class MessageTypeAdapter: TypeAdapter<Message> {
     }
 }
 
+@Keep
 data class Data(
     val accessToken: String? = null,
     val user: User? = null,
@@ -22,10 +25,21 @@ data class Data(
     val payment: Payment? = null
 )
 
+@Keep
 @TypeFor(field = "event", adapter = MessageTypeAdapter::class)
 open class Message(val event: String? = null)
+
+@Keep
 class ReadyMessage(): Message()
+
+@Keep
 class ExitMessage(): Message()
+
+@Keep
 data class SuccessMessage(val data: Data): Message()
+
+@Keep
 data class FailureMessage(val type: String, val code: String, val message: String): Message()
+
+@Keep
 data class GenericMessage(val namespace: String?, val data: String?): Message()

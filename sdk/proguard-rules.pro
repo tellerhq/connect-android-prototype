@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+-keep class kotlin.Metadata { *; }
+
+-keepclassmembers public class io.teller.connect.sdk.** {
+    public synthetic <methods>;
+ }
+-keepattributes *Annotation*
