@@ -8,6 +8,8 @@ android {
     compileSdk = 31
     buildToolsVersion = "30.0.3"
 
+    namespace = "io.teller.connect"
+
     defaultConfig {
         applicationId = "io.teller.connect.example"
         minSdk = 23
@@ -30,9 +32,9 @@ val fragmentVersion = "1.4.1"
 
 dependencies {
     implementation(project(":sdk"))
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("com.google.android.material:material:1.6.1")
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("androidx.fragment:fragment:$fragmentVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")

@@ -9,6 +9,8 @@ android {
     compileSdk = 31
     buildToolsVersion = "30.0.3"
 
+    namespace = "io.teller.connect.sdk"
+
     defaultConfig {
         minSdk = 23
         targetSdk = 31
