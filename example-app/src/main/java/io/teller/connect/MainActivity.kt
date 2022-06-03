@@ -118,6 +118,10 @@ class MainActivity : FragmentActivity(), ConnectListener {
         removeTellerConnectFragment()
     }
 
+    override fun onEvent(name: String, data: Map<String, Any>) {
+        Timber.d("$name: $data")
+    }
+
     override fun onFailure(error: Error) {
         handleError(error)
         removeTellerConnectFragment()

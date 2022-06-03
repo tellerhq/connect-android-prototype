@@ -62,6 +62,10 @@ class ConnectActivity : FragmentActivity(), ConnectListener {
         supportFinishAfterTransition()
     }
 
+    override fun onEvent(name: String, data: Map<String, Any>) {
+        // TODO use event
+    }
+
     override fun onFailure(error: Error) {
         val intent = Intent()
         intent.putExtra(RESULT_ERROR, error)

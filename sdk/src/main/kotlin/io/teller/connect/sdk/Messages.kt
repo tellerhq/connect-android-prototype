@@ -12,6 +12,7 @@ class MessageTypeAdapter: TypeAdapter<Message> {
         "success" -> SuccessMessage::class
         "failure" -> FailureMessage::class
         "exit" -> ExitMessage::class
+        "activityEvent" -> ActivityEventMessage::class
         else -> GenericMessage::class
     }
 }
@@ -23,6 +24,12 @@ data class Data(
     val enrollment: Enrollment? = null,
     val payee: Payee? = null,
     val payment: Payment? = null
+)
+
+@Keep
+data class ActivityEventData(
+    val name: String,
+    val data: Map<String, Any>
 )
 
 @Keep
@@ -40,6 +47,9 @@ data class SuccessMessage(val data: Data): Message()
 
 @Keep
 data class FailureMessage(val type: String, val code: String, val message: String): Message()
+
+@Keep
+class ActivityEventMessage(val data: ActivityEventData): Message()
 
 @Keep
 data class GenericMessage(val namespace: String?, val data: String?): Message()

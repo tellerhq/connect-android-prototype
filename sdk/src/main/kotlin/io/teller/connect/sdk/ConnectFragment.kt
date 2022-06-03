@@ -126,6 +126,7 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
                 is ExitMessage -> onExit()
                 is SuccessMessage -> onSuccess(m)
                 is FailureMessage -> onFailure(m)
+                is ActivityEventMessage -> onEvent(m)
                 else -> {
                     // TODO log if logging enabled
                 }
@@ -139,6 +140,10 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
 
     private fun onExit() {
         listener?.onExit()
+    }
+
+    private fun onEvent(message: ActivityEventMessage) {
+        listener?.onEvent(message.data.name, message.data.data)
     }
 
     private fun onSuccess(message: SuccessMessage) {
