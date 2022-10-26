@@ -2,7 +2,6 @@ package io.teller.connect.sdk
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -10,7 +9,7 @@ import androidx.fragment.app.commit
 class ConnectActivity : FragmentActivity(), ConnectListener {
 
     companion object {
-        const val EXTRA_CONFIG = "EXTRA_CONFIGURATION"
+        const val EXTRA_BUNDLE = "EXTRA_BUNDLE"
         const val RESULT_PAYEE = "RESULT_PAYEE"
         const val RESULT_PAYMENT = "RESULT_PAYMENT"
         const val RESULT_ERROR = "RESULT_ERROR"
@@ -22,8 +21,7 @@ class ConnectActivity : FragmentActivity(), ConnectListener {
         setContentView(R.layout.tc_activity_connect)
 
         if (savedInstanceState == null) {
-            val config = intent.getParcelableExtra<Configuration>(EXTRA_CONFIG)!!
-            val bundle = bundleOf(ConnectFragment.ARG_CONFIG to config)
+            val bundle = intent.getBundleExtra(EXTRA_BUNDLE)!!
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<ConnectFragment>(R.id.connectFragmentContainer, args = bundle)
@@ -60,10 +58,6 @@ class ConnectActivity : FragmentActivity(), ConnectListener {
 
         setResult(RESULT_OK, intent)
         supportFinishAfterTransition()
-    }
-
-    override fun onEvent(name: String, data: Map<String, Any>) {
-        // TODO use event
     }
 
     override fun onFailure(error: Error) {

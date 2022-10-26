@@ -33,11 +33,6 @@ interface ConnectListener {
     fun onSuccess(payee: Payee)
 
     /**
-     * Called when a Teller Connect activity event is received.
-     */
-    fun onEvent(name: String, data: Map<String, Any>)
-
-    /**
      * Called when payee or payment creation fails.
      */
     fun onFailure(error: Error)

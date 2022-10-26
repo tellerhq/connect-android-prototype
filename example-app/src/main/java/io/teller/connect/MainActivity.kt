@@ -62,7 +62,11 @@ class MainActivity : FragmentActivity(), ConnectListener {
      */
     private fun startTellerConnectActivity(configuration: Configuration) {
         val intent = Intent(this, ConnectActivity::class.java)
-        intent.putExtra(ConnectActivity.EXTRA_CONFIG, configuration)
+        val bundle = bundleOf(
+            ConnectFragment.ARG_CONFIG to configuration,
+            ConnectFragment.ARG_EVENT_LISTENER to connectEventListener
+        )
+        intent.putExtra(ConnectActivity.EXTRA_BUNDLE, bundle)
         startActivityForResult(intent, RC_CONNECT_BANK_ACCOUNT)
     }
 
@@ -86,7 +90,10 @@ class MainActivity : FragmentActivity(), ConnectListener {
     ConnectFragment example code:
      */
     private fun startTellerConnectFragment(configuration: Configuration) {
-        val bundle = bundleOf(ConnectFragment.ARG_CONFIG to configuration)
+        val bundle = bundleOf(
+            ConnectFragment.ARG_CONFIG to configuration,
+            ConnectFragment.ARG_EVENT_LISTENER to connectEventListener
+        )
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             addToBackStack("TellerConnect")
@@ -118,13 +125,15 @@ class MainActivity : FragmentActivity(), ConnectListener {
         removeTellerConnectFragment()
     }
 
-    override fun onEvent(name: String, data: Map<String, Any>) {
-        Timber.d("$name: $data")
-    }
-
     override fun onFailure(error: Error) {
         handleError(error)
         removeTellerConnectFragment()
+    }
+
+    private val connectEventListener = object: ConnectEventListener() {
+        override fun invoke(name: String, data: Map<String, Any>) {
+            Timber.d("$name: $data")
+        }
     }
 
     private fun removeTellerConnectFragment() {
