@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 
+@Deprecated("Please use ConnectFragment directly so you can handle events without subclassing the activity.")
 class ConnectActivity : FragmentActivity(), ConnectListener {
 
     companion object {

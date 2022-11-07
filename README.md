@@ -4,8 +4,7 @@ This repo is a temporary workaround while we build our Android SDK, essentially 
 
 This method of using Teller Connect is not supported unless separately agreed with your Teller point of contact.
 
-## Usage - `ConnectActivity`
-It provides a quick way of integrating Teller Connect into an Android app by starting `ConnectActivity` to receive a result later after the flow finishes:
+## Usage
 
 To start Teller Connect:
 ```kotlin
@@ -14,33 +13,12 @@ val configuration = Configuration(
     environment = Environment.SANDBOX
 )
 
-val intent = Intent(this, ConnectActivity::class.java)
-intent.putExtra(ConnectActivity.ARG_CONFIG, configuration)
-startActivityForResult(intent, RC_CONNECT_BANK_ACCOUNT)
-```
-
-To receive the result:
-```kotlin
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    if (resultCode == RESULT_OK) {
-        when (requestCode) {
-            RC_CONNECT_BANK_ACCOUNT -> {
-                val registrationData = data?.getParcelableExtra<Registration>(ConnectActivity.RESULT_REGISTRATION)
-                // use registration data
-            }
-        }
-    } else {
-        val error = data?.getParcelableExtra<Error>(ConnectActivity.RESULT_ERROR)
-        if (error != null) {
-            // Handle error
-        } else {
-            // Flow was canceled by user
-        }
-    }
+val bundle = bundleOf(ConnectFragment.ARG_CONFIG to configuration)
+supportFragmentManager.commit {
+    setReorderingAllowed(true)
+    addToBackStack("TellerConnect")
+    add<ConnectFragment>(R.id.fragmentContainer, args = bundle)
 }
 ```
 
-## Usage - `ConnectFragment`
-
-Alternatively, you may want to use `ConnectFragment` for a bit more control.
-Take a look at `ConnectActivity` source code for details.
+To receive results and events, the holding activity must implement `ConnectListener`.
