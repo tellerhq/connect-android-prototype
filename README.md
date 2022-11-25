@@ -15,11 +15,7 @@ val configuration = Configuration(
 )
 
 val intent = Intent(this, ConnectActivity::class.java)
-val bundle = bundleOf(
-    ConnectFragment.ARG_CONFIG to configuration,
-    ConnectFragment.ARG_EVENT_LISTENER to connectEventListener
-)
-intent.putExtra(ConnectActivity.EXTRA_BUNDLE, bundle)
+intent.putExtra(ConnectActivity.ARG_CONFIG, configuration)
 startActivityForResult(intent, RC_CONNECT_BANK_ACCOUNT)
 ```
 

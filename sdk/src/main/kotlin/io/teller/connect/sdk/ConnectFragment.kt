@@ -14,7 +14,6 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
 
     companion object {
         const val ARG_CONFIG = "ARG_CONFIGURATION"
-        const val ARG_EVENT_LISTENER = "ARG_EVENT_LISTENER"
         private const val JS_OBJECT_NAME = "AndroidApp"
     }
 
@@ -22,7 +21,6 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
     private lateinit var config: Configuration
     private var webView: WebView? = null
     private var listener: ConnectListener? = null
-    private var eventListener: ConnectEventListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,7 +33,6 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         config = requireArguments().getParcelable(ARG_CONFIG)!!
-        eventListener = requireArguments().getSerializable(ARG_EVENT_LISTENER) as ConnectEventListener?
         webView = view.findViewById(R.id.connectWebView)
     }
 
@@ -146,7 +143,7 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
     }
 
     private fun onEvent(message: ActivityEventMessage) {
-        eventListener?.invoke(message.data.name, message.data.data)
+        listener?.onEvent(message.data.name, message.data.data)
     }
 
     private fun onSuccess(message: SuccessMessage) {
