@@ -3,6 +3,7 @@ package io.teller.connect
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.IntentCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.add
@@ -71,13 +72,20 @@ class MainActivity : FragmentActivity(), ConnectListener {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 RC_CONNECT_BANK_ACCOUNT -> {
-                    val registrationData =
-                        data?.getParcelableExtra<Registration>(ConnectActivity.RESULT_REGISTRATION)
+                    val registrationData = IntentCompat.getParcelableExtra(
+                        data!!,
+                        ConnectActivity.RESULT_REGISTRATION,
+                        Registration::class.java
+                    )
                     showSuccess(registrationData!!)
                 }
             }
         } else {
-            val error = data?.getParcelableExtra<Error>(ConnectActivity.RESULT_ERROR)
+            val error = IntentCompat.getParcelableExtra(
+                data!!,
+                ConnectActivity.RESULT_ERROR,
+                Error::class.java
+            )
             handleError(error)
         }
     }
