@@ -15,16 +15,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/connectActivityButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorPrimary"
-            android:padding="24dp"
-            android:text="@string/connect_bank_account_activity"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <Button
             android:id="@+id/connectFragmentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,9 +1,7 @@
 package io.teller.connect
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.IntentCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.add
@@ -15,10 +13,6 @@ import timber.log.Timber
 class MainActivity : FragmentActivity(), ConnectListener {
 
     companion object {
-        const val RC_CONNECT_BANK_ACCOUNT = 42
-        const val RC_CONNECT_PAYEE = 43
-        const val RC_CONNECT_PAYMENT = 44
-
         val configuration = Configuration(
             appId = "YOUR-APP-ID",
             skipPicker = true,
@@ -32,10 +26,6 @@ class MainActivity : FragmentActivity(), ConnectListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        findViewById<View>(R.id.connectActivityButton).setOnClickListener {
-            startTellerConnectActivity(configuration)
-        }
 
         fragmentContainer = findViewById(R.id.fragmentContainer)
         findViewById<View>(R.id.connectFragmentButton).setOnClickListener {
@@ -55,38 +45,6 @@ class MainActivity : FragmentActivity(), ConnectListener {
                 .show()
         } else {
             Snackbar.make(fragmentContainer, "Failure", Snackbar.LENGTH_LONG).show()
-        }
-    }
-
-    /*
-    ConnectActivity example code:
-     */
-    private fun startTellerConnectActivity(configuration: Configuration) {
-        val intent = Intent(this, ConnectActivity::class.java)
-        intent.putExtra(ConnectActivity.EXTRA_CONFIG, configuration)
-        startActivityForResult(intent, RC_CONNECT_BANK_ACCOUNT)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                RC_CONNECT_BANK_ACCOUNT -> {
-                    val registrationData = IntentCompat.getParcelableExtra(
-                        data!!,
-                        ConnectActivity.RESULT_REGISTRATION,
-                        Registration::class.java
-                    )
-                    showSuccess(registrationData!!)
-                }
-            }
-        } else {
-            val error = IntentCompat.getParcelableExtra(
-                data!!,
-                ConnectActivity.RESULT_ERROR,
-                Error::class.java
-            )
-            handleError(error)
         }
     }
 
@@ -139,6 +97,7 @@ class MainActivity : FragmentActivity(), ConnectListener {
         supportFragmentManager.popBackStack()
     }
 
+    @Deprecated("Deprecated by Android")
     override fun onBackPressed() {
         if (supportFragmentManager.fragments.isNotEmpty()) {
             removeTellerConnectFragment()

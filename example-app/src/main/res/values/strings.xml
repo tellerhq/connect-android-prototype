@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">TellerConnect</string>
-    <string name="connect_bank_account_activity">Connect bank account\n(Activity)</string>
-    <string name="connect_bank_account_fragment">Connect bank account\n(Fragment)</string>
+    <string name="connect_bank_account_fragment">Connect bank account</string>
 </resources>

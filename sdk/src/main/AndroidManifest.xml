@@ -8,6 +8,5 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TellerConnect">
 
-        <activity android:name=".ConnectActivity" />
     </application>
 </manifest>
