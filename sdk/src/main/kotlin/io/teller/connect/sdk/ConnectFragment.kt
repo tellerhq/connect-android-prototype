@@ -103,7 +103,9 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
         with(config) {
             environment?.let { builder.appendQueryParameter("environment", it.toString()) }
             builder.appendQueryParameter("skip_picker", skipPicker.toString())
-            builder.appendQueryParameter("products[]", products.joinToString(","))
+            products.forEach { product ->
+                builder.appendQueryParameter("product[]", product.toString())
+            }
             institution?.let { builder.appendQueryParameter("institution", it) }
             selectAccount?.let { builder.appendQueryParameter("select_account", it.toString()) }
             userId?.let { builder.appendQueryParameter("user_id", it) }
