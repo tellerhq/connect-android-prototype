@@ -18,7 +18,7 @@ class MainActivity : FragmentActivity(), ConnectListener {
             skipPicker = true,
             environment = Environment.SANDBOX,
             selectAccount = SelectAccount.SINGLE,
-            products = listOf(Product.VERIFY, Product.BALANCE, Product.TRANSACTIONS)
+            products = listOf(Product.VERIFY, Product.IDENTITY)
         )
     }
 
