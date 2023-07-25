@@ -13,11 +13,12 @@ import timber.log.Timber
 class MainActivity : FragmentActivity(), ConnectListener {
 
     companion object {
-        val configuration = Configuration(
+        val config = Config(
             appId = "YOUR-APP-ID",
             skipPicker = true,
             environment = Environment.SANDBOX,
-            selectAccount = "single"
+            selectAccount = SelectAccount.SINGLE,
+            products = listOf(Product.VERIFY, Product.BALANCE, Product.TRANSACTIONS)
         )
     }
 
@@ -29,7 +30,7 @@ class MainActivity : FragmentActivity(), ConnectListener {
 
         fragmentContainer = findViewById(R.id.fragmentContainer)
         findViewById<View>(R.id.connectFragmentButton).setOnClickListener {
-            startTellerConnectFragment(configuration)
+            startTellerConnectFragment(config)
         }
     }
 
@@ -51,8 +52,8 @@ class MainActivity : FragmentActivity(), ConnectListener {
     /*
     ConnectFragment example code:
      */
-    private fun startTellerConnectFragment(configuration: Configuration) {
-        val bundle = bundleOf(ConnectFragment.ARG_CONFIG to configuration)
+    private fun startTellerConnectFragment(config: Config) {
+        val bundle = bundleOf(ConnectFragment.ARG_CONFIG to config)
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             addToBackStack("TellerConnect")

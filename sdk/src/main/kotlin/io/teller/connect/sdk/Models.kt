@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Keep
 @Parcelize
-data class Configuration(
+data class Config(
     /**
      * Your Teller application id, can be found in https://teller.io/settings/application.
      */
@@ -21,13 +21,8 @@ data class Configuration(
      *  and load the first step for the corresponding institution.
      */
     val institution: String? = null,
-    /**
-     *  Can be set to one of:
-     *  `disabled` - automatically connect all the supported financial accounts associated with this user's account at the institution (default)
-     *  `single` - the user will see a list of supported financial accounts and will need to select one to connect
-     *  `multiple` - the user will see a list of supported financial accounts and will need to select one or more to connect
-     */
-    val selectAccount: String? = null,
+    val selectAccount: SelectAccount? = null,
+    val products: List<Product>,
     /**
      * Set to true to disable going back to the picker screen from an institution screen.
      */
@@ -49,13 +44,49 @@ data class Configuration(
      */
     val connectToken: String? = null,
     /**
+     * An arbitrary string chosen by your application to allow for the cryptographic signing of
+     * the enrollment object passed to the onSuccess callback.
+     * This value must be randomly generated and unique to the current session.
+     */
+    val nonce: String? = null,
+    /**
      * Additional parameters.
      */
     val additionalParams: Map<String, String> = emptyMap()
 ) : Parcelable
 
 @Keep
-enum class Environment { SANDBOX, DEVELOPMENT, PRODUCTION }
+enum class Environment(private val env: String) {
+    SANDBOX("sandbox"),
+    DEVELOPMENT("development"),
+    PRODUCTION("production");
+
+    override fun toString(): String {
+        return env
+    }
+}
+
+@Keep
+enum class SelectAccount(private val option: String) {
+    DISABLED("disabled"),
+    SINGLE("single"),
+    MULTIPLE("multiple");
+
+    override fun toString(): String {
+        return option
+    }
+}
+
+enum class Product(private val product: String) {
+    VERIFY("verify"),
+    BALANCE("balance"),
+    TRANSACTIONS("transactions"),
+    IDENTITY("identity");
+
+    override fun toString(): String {
+        return product
+    }
+}
 
 @Keep
 @Parcelize

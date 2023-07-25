@@ -3,6 +3,7 @@ package io.teller.connect.sdk
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
@@ -17,8 +18,8 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
         private const val JS_OBJECT_NAME = "AndroidApp"
     }
 
+    private lateinit var config: Config
     private val klaxon = Klaxon()
-    private lateinit var config: Configuration
     private var webView: WebView? = null
     private var listener: ConnectListener? = null
 
@@ -32,7 +33,12 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        config = requireArguments().getParcelable(ARG_CONFIG)!!
+        config = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(ARG_CONFIG, Config::class.java)!!
+        } else {
+            @Suppress("DEPRECATION")
+            requireArguments().getParcelable(ARG_CONFIG)!!
+        }
         webView = view.findViewById(R.id.connectWebView)
     }
 
@@ -87,7 +93,7 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
         }
     }
 
-    private fun startTellerConnect(webView: WebView, config: Configuration) {
+    private fun startTellerConnect(webView: WebView, config: Config) {
         val builder = Uri.Builder()
             .scheme("https")
             .authority("teller.io")
@@ -95,16 +101,15 @@ class ConnectFragment : Fragment(R.layout.tc_fragment_connect), WebViewCompat.We
             .appendPath(config.appId)
 
         with(config) {
-            environment?.let {
-                val env = it.toString().lowercase()
-                builder.appendQueryParameter("environment", env)
-            }
+            environment?.let { builder.appendQueryParameter("environment", it.toString()) }
             builder.appendQueryParameter("skip_picker", skipPicker.toString())
+            builder.appendQueryParameter("products[]", products.joinToString(","))
             institution?.let { builder.appendQueryParameter("institution", it) }
-            selectAccount?.let { builder.appendQueryParameter("select_account", it) }
+            selectAccount?.let { builder.appendQueryParameter("select_account", it.toString()) }
             userId?.let { builder.appendQueryParameter("user_id", it) }
             enrollmentId?.let { builder.appendQueryParameter("enrollment_id", it) }
             connectToken?.let { builder.appendQueryParameter("connect_token", it) }
+            nonce?.let { builder.appendQueryParameter("nonce", it) }
             additionalParams.forEach { p ->
                 builder.appendQueryParameter(p.key, p.value)
             }
